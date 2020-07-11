@@ -1,0 +1,156 @@
+<nav
+  class="navbar navbar-expand-lg navbar-light"
+  style="background-color: #673ab7; color: aliceblue; padding-bottom: 35px;"
+>
+  <a class="navbar-brand"
+    ><font color="white"
+      ><p>ระบบแฟ้มอาจารย์ที่ปรึกษา (สาขาวิศวกรรมคอมพิวเตอร์)</p>
+      <p>Advisor System</p></font
+    ></a
+  >
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+</nav>
+
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+    <!-- Tabs Titles -->
+
+    <!-- Icon -->
+    <div class="fadeIn first">
+      <img
+        src="./assets/rmuti.png"
+        class="w3-round"
+        style="width: 30%; text-align: center;"
+      />
+    </div>
+    <i class="fal fa-abacus"></i>
+    <!-- Login Form -->
+    <form
+      [formGroup]="formLogin"
+      (ngSubmit)="formLogin.valid ? submitlogin() : ''"
+    >
+      <span
+        ><i><strong>*สำหรับผู้ดูแลระบบ</strong></i></span
+      ><br />
+      <mat-form-field class="example-full-width">
+        <input
+          matInput
+          placeholder="ชื่อผู้ใช้"
+          formControlName="username"
+          required
+          ngModel
+        />
+      </mat-form-field>
+      <br />
+      <mat-form-field class="example-full-width">
+        <input
+          matInput
+          placeholder="รหัสผ่าน"
+          type="password"
+          formControlName="password"
+          required
+          ngModel
+        />
+      </mat-form-field>
+      <br />
+      <!-- <input
+        type="text"
+        placeholder="รหัสผ่าน"
+        formControlName="password"
+        style="text-align: left;"
+        required
+        ngModel
+      />
+      <input
+        type="password"
+        placeholder="*รหัสผ่าน"
+        formControlName="password"
+        style="text-align: left;"
+        required
+        ngModel
+      /> -->
+      <button class="btn btn-primary" type="submit">
+        LOGIN
+      </button>
+      <br /><br /><span style="text-align: left;"
+        ><i><strong>*สำหรับอาจารย์และนักศึกษา</strong></i></span
+      ><br />
+    </form>
+
+    <button class="btn btn-success" (click)="openSSO()">
+      RMUTi Single Sign-on System
+    </button>
+    <br />
+    <br />
+
+    <!-- Remind Passowrd -->
+  </div>
+</div>
+
+<footer
+  class="page-footer font-small cyan darken-3"
+  style="background-color: #673ab7; color: aliceblue;"
+>
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3">
+    <i class="fas fa-users"></i>
+
+    © 2020 Copyright:
+    <a href="#"> มหาวิทยาลัยเทคโนโลยีราชมงคลอีสาน</a>
+  </div>
+  <!-- Copyright -->
+</footer>
+<!-- Footer -->
+<!-- <form>
+  <div align="center">
+    <img
+      src="./assets/rmuti.png"
+      class="w3-round"
+      style="width:8%; text-align: center"
+    />
+  </div>
+  <div style="width: 450px;margin: auto">
+    <div class="form-group">
+      <label for="Username"> <B>Username</B></label>
+      <input
+        type="text"
+        class="form-control"
+        id="Username"
+        name="Username"
+        placeholder="ชื่อผู้ใช้"
+        ngModel
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="Password"><B>Password</B></label>
+      <input
+        type="text"
+        class="form-control"
+        id="Password"
+        name="Password"
+        placeholder="รหัสผู้ใช้"
+        ngModel
+      />
+    </div>
+  </div>
+  <div align="center">
+    <button type="submit" class="btn btn-primary">
+      LOGIN
+    </button>
+    <br />OR <br />
+    <button type="submit" class="btn btn-success">
+      RMUTi Single Sign-on System
+    </button>
+  </div>
+</form> -->

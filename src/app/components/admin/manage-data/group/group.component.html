@@ -1,0 +1,260 @@
+<div class="panel-body" style="margin-left: 10px; margin-right: 10px;">
+  คณะ:&nbsp;&nbsp;<mat-form-field style="width: 30%;">
+    <mat-label>โปรดเลือกคณะ</mat-label>
+    <mat-select required>
+      <mat-option
+        *ngFor="let i of dataFaculty; let x = index"
+        [value]="i.name"
+        (click)="clickFaculty(i.code, i.name)"
+      >
+        {{ i.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <br />
+  <span *ngIf="codeFaculty!"
+    >สาขา:&nbsp;&nbsp;<mat-form-field style="width: 30%;">
+      <mat-label>โปรดเลือกสาขา</mat-label>
+      <mat-select required>
+        <mat-option
+          *ngFor="let i of dataMajor; let x = index"
+          [value]="i.name"
+          (click)="clickMajor(i.code, i.name, i.acronym)"
+        >
+          {{ i.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field></span
+  >
+  <br />
+  <form
+    [formGroup]="inBranchhead"
+    #formChange="ngForm"
+    (ngSubmit)="inBranchhead.valid ? updateBranchhead() : ''"
+  >
+    <span *ngIf="codeMajor!"
+      >หัวหน้าสาขาวิชา :&nbsp;&nbsp;{{ nameBranchhead }}&nbsp;&nbsp;
+      <button
+        type="button"
+        class="btn btn-primary btn-sm"
+        data-toggle="modal"
+        data-target="#addHead"
+        (click)="getIDBranchhead(IDBranchhead)"
+      >
+        แก้ไขหัวหน้าสาขา
+      </button></span
+    >
+
+    <div class="modal" id="addHead">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h2 class="modal-title">แก้ไขหัวหน้าสาขา</h2>
+            <button type="button" class="close" data-dismiss="modal">
+              &times;
+            </button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            เลือกหัวหน้าสาขา : &nbsp;&nbsp;
+            <mat-form-field style="width: 30%;">
+              <mat-label>เลือกหัวหน้าสาขา</mat-label>
+              <mat-select formControlName="Branchhead" required>
+                <mat-option
+                  *ngFor="let i of dataTeacher; let x = index"
+                  [value]="i.userID"
+                >
+                  {{ i.titlename }}{{ i.fname }}&nbsp;{{ i.lname }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">
+              ยกเลิก
+            </button>
+            <button type="submit" class="btn btn-success">ตกลง</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <br />
+  <span *ngIf="codeMajor!"
+    >โปรแกรมวิชา:&nbsp;&nbsp;<mat-form-field style="width: 50%;">
+      <mat-label>โปรดเลือกโปรแกรมวิชา</mat-label>
+      <mat-select required>
+        <mat-option
+          style="width: auto;"
+          *ngFor="let i of dataBranch; let x = index"
+          [value]="i.name"
+          (click)="clickBranch(i.code, i.name, i.acronym)"
+        >
+          {{ i.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field></span
+  >
+  <br />
+
+  <form
+    [formGroup]="inGroup"
+    #formChange="ngForm"
+    (ngSubmit)="inGroup.valid ? insertGroup() : ''"
+  >
+    <!-- Button to Open the Modal -->
+    <button
+      type="button"
+      class="btn btn-primary"
+      data-toggle="modal"
+      data-target="#addGroup"
+      (click)="clearFrom()"
+      *ngIf="codeBranch!"
+    >
+      เพิ่มกลุ่มเรียน
+    </button>
+
+    <!-- The Modal -->
+    <div class="modal" id="addGroup">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h2 class="modal-title">เพิ่มกลุ่มเรียน</h2>
+            <button type="button" class="close" data-dismiss="modal">
+              &times;
+            </button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            สาขาวิชา : &nbsp;&nbsp;{{ nameMajor }} <br />
+            กลุ่มเรียน :&nbsp;&nbsp; <span> {{ acronym }}</span>
+            &nbsp;&nbsp;.&nbsp;&nbsp;
+            <mat-form-field class="example-full-width">
+              <mat-label>โปรดระบุรหัสกลุ่มเรียน</mat-label>
+              <input
+                matInput
+                maxlength="6"
+                formControlName="group"
+                onkeyup="this.value = this.value.toUpperCase()"
+                required
+              />
+            </mat-form-field>
+            <br />
+            อาจารย์ที่ปรึกษา : &nbsp;&nbsp;<mat-form-field style="width: 30%;">
+              <mat-label>เลือกอาจารย์ที่ปรึกษา</mat-label>
+              <mat-select formControlName="advisorID" required>
+                <mat-option
+                  *ngFor="let i of dataTeacher; let x = index"
+                  [value]="i.userID"
+                  (click)="clickAdvisor(i.userID)"
+                >
+                  {{ i.titlename }}{{ i.fname }}&nbsp;{{ i.lname }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">
+              ยกเลิก
+            </button>
+
+            <button type="submit" class="btn btn-success">
+              บันทึก
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<table class="table" *ngIf="dataGroup != null">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">ลำดับ</th>
+      <th scope="col">กลุ่มเรียน</th>
+      <th scope="col">อาจารย์ที่ปรึกษา</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let i of dataGroup; let x = index">
+      <th scope="row">{{ x + 1 }}</th>
+      <td>
+        {{ i.study_group_name }}
+      </td>
+      <td>{{ i.titlename }}{{ i.fname }}&nbsp;&nbsp;{{ i.lname }}</td>
+      <td>
+        <span (click)="getIDgroup(i.user_id, i.study_group_id)"
+          ><i
+            class="fas fa-edit"
+            style="font-size: 18px; cursor: pointer;"
+            title="แก้ไขข้อมูล"
+            data-toggle="modal"
+            data-target="#updateGroup"
+          ></i
+        ></span>
+        &nbsp;&nbsp;&nbsp;
+        <span (click)="deleteGroup(i.study_group_id)"
+          ><i
+            class="fas fa-trash-alt"
+            style="font-size: 18px; color: red; cursor: pointer;"
+            title="ลบข้อมูล"
+          ></i
+        ></span>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- The Modal -->
+<div class="modal" id="updateGroup">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">แก้ไขอาจารย์ที่ปรึกษา</h4>
+        <button type="button" class="close" data-dismiss="modal">
+          &times;
+        </button>
+      </div>
+
+      <form
+        [formGroup]="inGroup"
+        #formChange="ngForm"
+        (ngSubmit)="inGroup.valid ? updateGroup() : ''"
+      >
+        <!-- Modal body -->
+        <div class="modal-body">
+          อาจารย์ที่ปรึกษา : &nbsp;&nbsp;<mat-form-field style="width: 30%;">
+            <mat-label>โปรดเลือกอาจารย์ที่ปรึกษา</mat-label>
+            <mat-select formControlName="advisorID" required>
+              <mat-option
+                *ngFor="let i of dataTeacher; let x = index"
+                [value]="i.userID"
+              >
+                {{ i.titlename }}{{ i.fname }}&nbsp;{{ i.lname }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">
+            ยกเลิก
+          </button>
+          <button type="submit" class="btn btn-success">ตกลง</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

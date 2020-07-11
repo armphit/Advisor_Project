@@ -1,0 +1,196 @@
+<mat-tab-group>
+  <mat-tab label="ข้อมูลส่วนตัว">
+    <div
+      class="panel panel-default"
+      style="
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+      "
+    >
+      <div class="panel-heading">
+        <h2 style="margin-bottom: 2px;">ข้อมูลส่วนตัว</h2>
+      </div>
+      <div class="panel-body" *ngFor="let i of dataStudent">
+        <p><strong>รหัสนักศึกษา :</strong> &nbsp;&nbsp;{{ i.userID }}</p>
+        <p>
+          <strong>ชื่อ - นามสกุล :</strong>&nbsp;&nbsp; {{ i.titlename
+          }}{{ i.fname }}&nbsp;&nbsp;{{ i.lname }}
+        </p>
+        <p><strong>E-mail:</strong>&nbsp;&nbsp;{{ i.e_mail }}</p>
+        <p><strong>กลุ่มเรียน :</strong>&nbsp;&nbsp;{{ i.study_group_name }}</p>
+        <p>
+          <strong>อาจารย์ที่ปรึกษา:</strong>&nbsp;&nbsp;{{ i.t
+          }}{{ i.f }}&nbsp;&nbsp;{{ i.l }}
+        </p>
+        <p><strong>สาขาวิชา :</strong>&nbsp;&nbsp;{{ i.name }}</p>
+        <p>
+          <strong>หัวหน้าสาขา :</strong>&nbsp;&nbsp;{{ i.t2
+          }}{{ i.f2 }}&nbsp;&nbsp;{{ i.l2 }}
+        </p>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="ข้อมูลการศึกษา">
+    <div
+      class="panel panel-default"
+      style="
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+      "
+    >
+      <form
+        [formGroup]="fileUpload"
+        #formChange="ngForm"
+        (ngSubmit)="fileUpload.valid ? onClickupload() : ''"
+      >
+        <div class="panel-heading">
+          <h2 style="margin-bottom: 2px;">ข้อมูลการศึกษา</h2>
+        </div>
+        <div class="panel-body">
+          ภาคการศึกษา :
+          <mat-form-field style="width: 13%;">
+            <mat-label>เลือกปีการศึกษา</mat-label>
+            <mat-select
+              formControlName="year"
+              required
+              [(value)]="selected"
+              (selectionChange)="fileUpload.patchValue({ term: null })"
+            >
+              <mat-option *ngFor="let i of range" [value]="i.value">
+                {{ i.value }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          /
+          <mat-form-field style="width: 25;" *ngIf="selected">
+            <mat-label>เลือกภาคการเรียน</mat-label>
+            <mat-select
+              formControlName="term"
+              [(value)]="term"
+              required
+              (selectionChange)="getTerm($event.value)"
+            >
+              <mat-option value="1">ภาคเรียนที่ 1</mat-option>
+              <mat-option value="2">ภาคเรียนที่ 2</mat-option>
+              <mat-option value="3">ภาคเรียนฤดูร้อน</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <br />
+          <br />
+          <div class="row">
+            <div class="col-sm-2.5" style="padding-left: 20px;">
+              <mat-form-field *ngIf="term!">
+                <mat-label>โปรดเลือกไฟล์ที่ต้องการ</mat-label>
+                <mat-select
+                  [(value)]="selectUpload"
+                  formControlName="selectUpload"
+                >
+                  <mat-option value="history">ประวัติส่วนตัว</mat-option>
+                  <mat-option value="timetable">ตารางเรียน</mat-option>
+                  <mat-option value="results">ผลการเรียน</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <div *ngIf="selectUpload!" style="padding-top: 15px;">
+                <div class="col-md-6">
+                  <input
+                    type="file"
+                    class="custom-file-input"
+                    id="customFile"
+                    formControlName="Upload"
+                    #fileInput
+                    (change)="uploadFile(fileInput.files[0])"
+                    required
+                    accept=".pdf"
+                  />
+                  <label class="custom-file-label text-left" for="customFile">{{
+                    filesName
+                  }}</label>
+                </div>
+                &nbsp;&nbsp;
+                <button type="submit" class="btn btn-success btn-sm">
+                  ยืนยัน
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div style="padding-top: 20px;">
+            ประวัติส่วนตัว :&nbsp; &nbsp;<button
+              *ngIf="getHistory!"
+              type="button"
+              class="btn btn-primary btn-sm"
+            >
+              <a href="{{ http.PathPDF }}{{ getHistory }}" target="_blank"
+                ><font color="white">คลิกดูประวัติส่วนตัว</font></a
+              >
+            </button>
+          </div>
+          <div style="padding-top: 20px;">
+            ตารางเรียน : &nbsp; &nbsp;<button
+              *ngIf="timetable!"
+              type="button"
+              class="btn btn-primary btn-sm"
+            >
+              <a href="{{ http.PathPDF }}{{ timetable }}" target="_blank"
+                ><font color="white">คลิกดูตารางเรียน</font></a
+              >
+            </button>
+          </div>
+
+          <div style="padding-top: 20px;">
+            ผลการเรียน :&nbsp; &nbsp;<button
+              *ngIf="results!"
+              type="button"
+              class="btn btn-primary btn-sm"
+            >
+              <a href="{{ http.PathPDF }}{{ results }}" target="_blank"
+                ><font color="white">คลิกดูผลการเรียน</font></a
+              >
+            </button>
+          </div>
+
+          <div class="row">
+            <div
+              class="col-sm-1.9"
+              style="padding-top: 20px; padding-left: 15px;"
+            >
+              แผนการเรียน :
+            </div>
+            <div class="col-sm-2">
+              <mat-form-field style="width: 90%;">
+                <mat-label>โปรดเลือกชั้นปี</mat-label>
+                <mat-select
+                  [(value)]="classes"
+                  (selectionChange)="clickCurriculum($event.value)"
+                  required
+                >
+                  <mat-option value="1">ชั้นปี 1</mat-option>
+                  <mat-option value="2">ชั้นปี 2</mat-option>
+                  <mat-option value="3">ชั้นปี 3</mat-option>
+                  <mat-option value="4">ชั้นปี 4</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div
+              class="col-sm-6"
+              style="padding-top: 15px;"
+              *ngIf="dataCurriculum!"
+            >
+              <button type="button" class="btn btn-success btn-sm">
+                <a href="{{ http.PathPDF }}{{ dataCurriculum }}" target="_blank"
+                  ><font color="white">คลิกดูแผนการเรียน</font></a
+                >
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </mat-tab>
+</mat-tab-group>

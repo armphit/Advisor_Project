@@ -1,0 +1,24 @@
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav {
+  width: 250px;
+  background: rgb(243, 243, 243);
+  box-shadow: 1px 0px 4px 0 rgba(0, 0, 0, 0.3);
+}
+
+.mat-toolbar {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  background: rgb(103, 58, 183);
+  color: rgb(255, 255, 255);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  height: 80px;
+}
+.mat-list-item.link-active{
+
+  color: #683ab7;
+  //any styles you like to add
+}

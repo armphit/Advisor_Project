@@ -1,0 +1,88 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) === false"
+  >
+    <div class="text-center">
+      <img
+        src="assets/rmuti.png"
+        class="w3-round"
+        style="width: 40%; text-align: center;"
+      />
+      <br />
+      <strong>{{ dataProfile }}</strong>
+    </div>
+    <mat-nav-list *ngIf="status == 'Admin'">
+      <a
+        mat-list-item
+        [routerLink]="['/admin/manage-data']"
+        [routerLinkActive]="['link-active']"
+        ><i class="fas fa-tools"></i>&nbsp;&nbsp;<strong
+          >จัดการข้อมูล</strong
+        ></a
+      >
+      <a
+        mat-list-item
+        [routerLink]="['/admin/advice-data']"
+        [routerLinkActive]="['link-active']"
+        ><i class="fas fa-envelope"></i>&nbsp;&nbsp;<strong
+          >การขอคำปรึกษา</strong
+        ></a
+      >
+      <a mat-list-item (click)="onLogout()"
+        ><font color="red"
+          ><i class="fas fa-sign-out-alt"></i> <strong>ออกระบบ</strong></font
+        ></a
+      >
+    </mat-nav-list>
+
+    <mat-nav-list *ngIf="status == '4500'">
+      <a
+        mat-list-item
+        [routerLink]="['/student/upload-file']"
+        [routerLinkActive]="['link-active']"
+        ><i class="fas fa-tools"></i>&nbsp;&nbsp;<strong
+          >จัดการข้อมูล</strong
+        ></a
+      >
+      <a
+        mat-list-item
+        [routerLink]="['/student/advice-data']"
+        [routerLinkActive]="['link-active']"
+        ><i class="fas fa-envelope"></i>&nbsp;&nbsp;<strong
+          >การขอคำปรึกษา</strong
+        ></a
+      >
+      <a mat-list-item (click)="onLogout()"
+        ><font color="#CD5C5C"
+          ><i class="fas fa-sign-out-alt"></i>&nbsp;&nbsp;
+          <strong>ออกระบบ</strong></font
+        ></a
+      >
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async"
+      >
+        <i class="fas fa-ellipsis-v"></i>
+      </button>
+
+      <span
+        >ระบบแฟ้มอาจารย์ที่ปรึกษา (สาขาวิศวกรรมคอมพิวเตอร์)<br />Advisor file
+        system</span
+      >
+    </mat-toolbar>
+    <router-outlet></router-outlet>
+    <!-- Add Content Here -->
+  </mat-sidenav-content>
+</mat-sidenav-container>
